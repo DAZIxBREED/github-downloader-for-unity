@@ -1,0 +1,24 @@
+{
+  "name": "DAZIxBREED.GitHubDownloader.Editor.Tests",
+  "rootNamespace": "DAZIxBREED.GitHubDownloader.Tests",
+  "references": [
+    "DAZIxBREED.GitHubDownloader.Runtime",
+    "DAZIxBREED.GitHubDownloader.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "DAZIxBREED.GitHubDownloader.Runtime",
+  "rootNamespace": "DAZIxBREED.GitHubDownloader",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

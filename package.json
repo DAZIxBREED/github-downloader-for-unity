@@ -1,0 +1,29 @@
+{
+  "name": "com.dazixbreed.github-downloader",
+  "version": "1.0.0",
+  "displayName": "GitHub Downloader for Unity",
+  "description": "A production-oriented Unity Editor and runtime toolkit for downloading GitHub repositories, branches, tags, commits, releases, and assets with caching, integrity checks, safe ZIP extraction, and transactional project installation.",
+  "unity": "2022.3",
+  "documentationUrl": "https://github.com/DAZIxBREED/github-downloader-for-unity#readme",
+  "changelogUrl": "https://github.com/DAZIxBREED/github-downloader-for-unity/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/DAZIxBREED/github-downloader-for-unity/blob/main/LICENSE.md",
+  "keywords": [
+    "github",
+    "download",
+    "package-manager",
+    "upm",
+    "installer",
+    "release"
+  ],
+  "author": {
+    "name": "DAZIxBREED",
+    "url": "https://github.com/DAZIxBREED"
+  },
+  "samples": [
+    {
+      "displayName": "Runtime Download Example",
+      "description": "A minimal MonoBehaviour showing runtime repository archive downloads.",
+      "path": "Samples~/RuntimeDownloadExample"
+    }
+  ]
+}

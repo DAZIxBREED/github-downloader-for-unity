@@ -1,0 +1,62 @@
+name: Package Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate package.json
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          package = json.loads(Path('package.json').read_text(encoding='utf-8'))
+          required = ['name', 'version', 'displayName', 'description', 'unity', 'author']
+          missing = [key for key in required if key not in package]
+          if missing:
+              raise SystemExit(f'Missing required package.json keys: {missing}')
+          if package['name'] != 'com.dazixbreed.github-downloader':
+              raise SystemExit('Unexpected package name')
+
+      - name: Validate repository structure
+        shell: python
+        run: |
+          from pathlib import Path
+          required = [
+              'Runtime/DAZIxBREED.GitHubDownloader.Runtime.asmdef',
+              'Editor/DAZIxBREED.GitHubDownloader.Editor.asmdef',
+              'Runtime/GitHubDownloaderService.cs',
+              'Editor/GitHubDownloaderWindow.cs',
+              'README.md',
+              'LICENSE.md',
+              'CHANGELOG.md'
+          ]
+          missing = [path for path in required if not Path(path).is_file()]
+          if missing:
+              raise SystemExit(f'Missing required files: {missing}')
+
+      - name: Reject obvious secrets
+        shell: bash
+        run: |
+          ! grep -RIE --exclude-dir=.git --exclude='package-validation.yml' \
+            '(github_pat_[A-Za-z0-9_]{20,}|ghp_[A-Za-z0-9]{20,})' .
+
+      - name: Check line endings
+        shell: python
+        run: |
+          from pathlib import Path
+          for path in Path('.').rglob('*'):
+              if path.is_file() and '.git' not in path.parts and path.suffix in {'.cs', '.json', '.md', '.yml', '.yaml'}:
+                  data = path.read_bytes()
+                  if b'\r\n' in data:
+                      raise SystemExit(f'CRLF line endings found in {path}')

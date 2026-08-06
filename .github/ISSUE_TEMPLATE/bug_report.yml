@@ -1,0 +1,35 @@
+name: Bug report
+description: Report a reproducible problem with GitHub Downloader for Unity
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: input
+    id: unity
+    attributes:
+      label: Unity version
+      placeholder: 2022.3.22f1
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Editor platform
+      options:
+        - Windows
+        - Linux
+        - macOS
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Include source type, install mode, and sanitized console output. Never paste a token.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+    validations:
+      required: true
