@@ -1,0 +1,13 @@
+name: Apply 1.1.0 Upgrade
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Upgrade payload not uploaded yet."
