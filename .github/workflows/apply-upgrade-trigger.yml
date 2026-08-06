@@ -1,16 +1,21 @@
 name: One-time 1.1.0 Upgrade Trigger
 
 on:
+  workflow_dispatch:
   issues:
     types: [opened]
 
 permissions:
   contents: write
+  pull-requests: write
+  issues: write
 
 jobs:
   apply:
-    if: github.event.issue.title == 'Apply GitHub Downloader 1.1.0 upgrade'
+    if: github.event_name == 'workflow_dispatch' || github.event.issue.title == 'Apply GitHub Downloader 1.1.0 upgrade'
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -37,3 +42,36 @@ jobs:
           git add -A
           git commit -m "Release GitHub Downloader for Unity 1.1.0"
           git push origin HEAD:agent/upgrade-1.1.0
+
+      - name: Open draft pull request
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! gh pr view agent/upgrade-1.1.0 --repo DAZIxBREED/github-downloader-for-unity >/dev/null 2>&1; then
+            gh pr create \
+              --repo DAZIxBREED/github-downloader-for-unity \
+              --base main \
+              --head agent/upgrade-1.1.0 \
+              --draft \
+              --title "Upgrade GitHub Downloader for Unity to 1.1.0" \
+              --body $'## What changed\n\n- Added resumable downloads and bounded retries.\n- Added concurrent batch downloads with aggregate progress.\n- Added semantic release update checks and editor cache controls.\n- Fixed the repository URL parser compile regression.\n- Expanded tests, samples, documentation, release tooling, and package validation.\n\n## Validation\n\n- Release ZIP SHA-256 verified before application.\n- Package structure, JSON/YAML, line endings, Unity metadata, and Git artifacts validated.\n- Unity EditMode tests require a Unity 2022.3 LTS runner.'
+          fi
+
+      - name: Close trigger issue
+        shell: bash
+        run: |
+          gh issue close 1 \
+            --repo DAZIxBREED/github-downloader-for-unity \
+            --reason completed \
+            --comment "The verified 1.1.0 source has been applied to the upgrade branch and a draft pull request has been opened." || true
+
+      - name: Remove one-time workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout -B main origin/main
+          rm -f .github/workflows/apply-upgrade-trigger.yml
+          git add -A
+          git commit -m "Remove one-time 1.1.0 upgrade trigger"
+          git push origin main
